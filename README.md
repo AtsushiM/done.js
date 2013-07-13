@@ -54,41 +54,6 @@ async.off('event-name'); // 全てのイベントを解除する
 ### インスタンスに登録されたイベントを実行する
 ```javascript
 sync.fire('event-name', arg1, arg2, arg3); // fire === bubble
-sync.bubble('event-name', arg1); // バブリング
-sync.capture('event-name', arg1); // キャプチャリング
-sync.only('event-name'); // イベント伝播せずに実行
-```
-
-### イベント伝播の対象を登録する
-```javascript
-var sync_parent = new Done.Sync,
-    sync_child = new Done.Sync;
-
-sync_parent.addChild(sync_child);
-
-// write code.
-
-sync_parent.removeChild(sync_child); // 解除
-sync_parent.removeChild(); // 全て解除
-```
-
-### イベントの伝播を停止する
-```javascript
-sync_child.on('event-propagation', function(num1, num2, num3, e) {
-    e.stopPropagation();
-});
-sync_parent.on('event-propagation', function(num1, num2, num3, e) {
-    // don't execute.
-});
-sync_child.fire('event-propagation', 1, 2, 3);
-
-sync.on('event-default', function(num, e) {
-    // don't execute.
-});
-sync.on('event-default', function(num, e) {
-    e.preventDefault();
-});
-sync.fire('event-default', 1);
 ```
 
 ### キューにタスクを追加する
