@@ -53,7 +53,7 @@ async.off('event-name'); // 全てのイベントを解除する
 
 ### インスタンスに登録されたイベントを実行する
 ```javascript
-sync.fire('event-name', arg1, arg2, arg3); // fire === bubble
+sync.fire('event-name', arg1, arg2, arg3);
 ```
 
 ### キューにタスクを追加する
