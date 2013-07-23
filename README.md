@@ -2,6 +2,9 @@
 同期、非同期の処理をわかりやすく扱えるライブラリ。
 
 
+[![Build Status](https://travis-ci.org/AtsushiM/done.js.png?branch=master)](https://travis-ci.org/AtsushiM/done.js)
+
+
 ## Usage
 ### インスタンスを作成する
 ```javascript
