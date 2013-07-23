@@ -1,9 +1,10 @@
-describe('Taskは', function() {
+describe('Doneは', function() {
     var task;
 
     beforeEach(function() {
         // init
-        task = new Task();
+        task = new Done({
+        });
     });
     afterEach(function() {
         // clear
@@ -15,7 +16,7 @@ describe('Taskは', function() {
     it('.extend(prop)でクラスを作成する', function() {
         var initcount = 0,
             method1count = 0,
-            Test = Task.extend({
+            Test = Done.extend({
                 init: function(num) {
                     initcount += num;
                 },
@@ -34,7 +35,7 @@ describe('Taskは', function() {
 
     it('initは省略できる', function() {
         var method1count = 0,
-            Test = Task.extend({
+            Test = Done.extend({
                 method1: function() {
                     method1count++;
                 }
@@ -51,7 +52,7 @@ describe('Taskは', function() {
         var method1count = 0,
             method2count = 0,
             method3count = 0,
-            Test1 = Task.extend({
+            Test1 = Done.extend({
                 method1: function() {
                     method1count += 1;
                 },
@@ -196,10 +197,10 @@ describe('Taskは', function() {
         expect(task.fire).to.be(task.bubble);
     });
 
-    it('addChild(instance)はTaskのインスタンスを子供として登録する。', function() {
+    it('addChild(instance)はDoneのインスタンスを子供として登録する。', function() {
         var ret = [],
-            child1 = new Task,
-            child2 = new Task;
+            child1 = new Done,
+            child2 = new Done;
 
         task.addChild(child1);
         child1.addChild(child2);
@@ -224,8 +225,8 @@ describe('Taskは', function() {
 
     it('capture()は親から子にイベントを伝播する', function() {
         var ret = [],
-            child1 = new Task,
-            child2 = new Task;
+            child1 = new Done,
+            child2 = new Done;
 
         task.addChild(child1);
         child1.addChild(child2);
@@ -250,8 +251,8 @@ describe('Taskは', function() {
 
     it('removeChild([instance])は子供を削除する。instanceを省略した場合、すべての子供を削除する。', function() {
         var ret = [],
-            child1 = new Task,
-            child2 = new Task;
+            child1 = new Done,
+            child2 = new Done;
 
         task.addChild(child1);
         child1.addChild(child2);
@@ -283,8 +284,8 @@ describe('Taskは', function() {
 
     it('only()は親、子にイベントを伝播せず実行する', function() {
         var ret = [],
-            child1 = new Task,
-            child2 = new Task;
+            child1 = new Done,
+            child2 = new Done;
 
         task.addChild(child1);
         child1.addChild(child2);
@@ -309,8 +310,8 @@ describe('Taskは', function() {
 
     it('on(event, func)で登録したfuncの引数の最後に追加して渡される値はeventオブジェクトである。', function() {
         var ret = [],
-            child1 = new Task,
-            child2 = new Task;
+            child1 = new Done,
+            child2 = new Done;
 
         task.addChild(child1);
         child1.addChild(child2);
@@ -349,9 +350,9 @@ describe('Taskは', function() {
         expect(ret).to.eql([1, 2, 4, 3]);
     });
 
-    it('Taskを拡張して独自のタスククラスを作成する', function(done) {
+    it('Doneを拡張して独自のタスククラスを作成する', function(done) {
         var ret = [],
-            Custom = Task.extend({
+            Custom = Done.extend({
                 'exe': function() {
                     var queue = this.getQueue();
 

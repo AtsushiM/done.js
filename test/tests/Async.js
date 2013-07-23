@@ -1,4 +1,4 @@
-describe('Task.Asyncは', function() {
+describe('Done.Asyncは', function() {
     var async;
 
     beforeEach(function() {
@@ -9,7 +9,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('dispose()でインスタンスを解放する', function() {
-        async = new Task.Async();
+        async = new Done.Async();
         async.dispose();
         expect(async).to.eql({});
     });
@@ -18,7 +18,7 @@ describe('Task.Asyncは', function() {
         var progresscount = 0,
             queueresult = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     queueresult.push(1);
@@ -53,12 +53,12 @@ describe('Task.Asyncは', function() {
     it('queueにAsyncインスタンスが渡された場合、インスタンスに設定されたqueueを非同期で実行する', function(done) {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
                 },
-                new Task.Async({
+                new Done.Async({
                     queue: [
                         function(done) {
                             setTimeout(function() {
@@ -71,7 +71,7 @@ describe('Task.Asyncは', function() {
                 function() {
                     result.push(3);
                 },
-                new Task.Async({
+                new Done.Async({
                     queue: [
                         function() {
                             result.push(4);
@@ -94,7 +94,7 @@ describe('Task.Asyncは', function() {
     it('start()はqueueを初期状態に戻してからqueueの順序通りにタスクを実行する', function() {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
@@ -112,7 +112,7 @@ describe('Task.Asyncは', function() {
     it('restart([queue])はキューを初期状態、もしくはqueueにしてからstart()する', function() {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
@@ -134,7 +134,7 @@ describe('Task.Asyncは', function() {
     it('stop()はキューを削除し、処理を停止する', function() {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
@@ -154,7 +154,7 @@ describe('Task.Asyncは', function() {
     it('pause()は処理を一時停止し、resume()は処理を再開する', function() {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
@@ -187,7 +187,7 @@ describe('Task.Asyncは', function() {
                 expect(queue).to.eql([]);
             };
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 task1,
                 task2
@@ -198,14 +198,14 @@ describe('Task.Asyncは', function() {
 
         async.start();
 
-        async = new Task.Async();
+        async = new Done.Async();
         expect(async.getQueue()).to.eql([]);
     });
 
     it('resetQueue([queue])はインスタンス生成時、もしくは引数のqueueを初期状態としてqueueのリセットを行う', function() {
         var task1 = function() {};
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 task1
             ]
@@ -223,7 +223,7 @@ describe('Task.Asyncは', function() {
     it('setQueue(queue)はqueueオプションの設定する', function() {
         var task1 = function(){};
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: []
         });
 
@@ -243,7 +243,7 @@ describe('Task.Asyncは', function() {
             task2 = function() {},
             task3 = function() {};
 
-        async = new Task.Async();
+        async = new Done.Async();
 
         async.addTask(task1);
         async.addTask(task2);
@@ -263,7 +263,7 @@ describe('Task.Asyncは', function() {
             task2 = function() {},
             task3 = function() {};
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 task1,
                 task2,
@@ -281,7 +281,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('start()実行時にstartイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('start', function() {
             done();
@@ -293,7 +293,7 @@ describe('Task.Asyncは', function() {
     it('restart()実行時にresetイベント、startイベントが発火する', function(done) {
         var result = [];
 
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('reset', function() {
             result.push('reset');
@@ -311,7 +311,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('stop()実行時にstopイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('stop', function() {
             done();
@@ -321,7 +321,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('pause()実行時にpauseイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('pause', function() {
             done();
@@ -331,7 +331,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('resume()実行時にresumeイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('resume', function() {
             done();
@@ -342,7 +342,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('resetQueue()実行時にresetイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('reset', function() {
             done();
@@ -352,7 +352,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('setQueue()実行時にchangeイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('change', function() {
             done();
@@ -362,7 +362,7 @@ describe('Task.Asyncは', function() {
     });
 
     it('addTask()実行時にchangeイベントが発火する', function(done) {
-        async = new Task.Async({});
+        async = new Done.Async({});
 
         async.on('change', function() {
             done();
@@ -376,7 +376,7 @@ describe('Task.Asyncは', function() {
         var func1 = function() {
             };
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 func1
             ]
@@ -393,7 +393,7 @@ describe('Task.Asyncは', function() {
         var result = [],
             count = 0;
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);
@@ -419,7 +419,7 @@ describe('Task.Asyncは', function() {
     it('キューの処理が全て完了した場合、completeイベントが発火する', function(done) {
         var result = [];
 
-        async = new Task.Async({
+        async = new Done.Async({
             queue: [
                 function() {
                     result.push(1);

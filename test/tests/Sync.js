@@ -1,4 +1,4 @@
-describe('Task.Syncは', function() {
+describe('Done.Syncは', function() {
     var task;
 
     beforeEach(function() {
@@ -10,7 +10,7 @@ describe('Task.Syncは', function() {
     });
 
     it('dispose()でインスタンスを解放する', function() {
-        task = new Task.Sync();
+        task = new Done.Sync();
         task.dispose();
         expect(task).to.eql({});
     });
@@ -19,7 +19,7 @@ describe('Task.Syncは', function() {
         var progresscount = 0,
             queueresult = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     queueresult.push(1);
@@ -54,12 +54,12 @@ describe('Task.Syncは', function() {
     it('queueにSyncインスタンスが渡された場合、インスタンスに設定されたqueueを終了してから次タスクを実行する', function(done) {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
                 },
-                new Task.Sync({
+                new Done.Sync({
                     queue: [
                         function() {
                             result.push(2);
@@ -72,7 +72,7 @@ describe('Task.Syncは', function() {
                 function() {
                     result.push(4);
                 },
-                new Task.Sync({
+                new Done.Sync({
                     queue: [
                         function(done) {
                             setTimeout(function() {
@@ -95,7 +95,7 @@ describe('Task.Syncは', function() {
     it('start()はqueueの順序通りにタスクを実行する', function() {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
@@ -113,7 +113,7 @@ describe('Task.Syncは', function() {
     it('restart([queue])はキューを初期状態、もしくはqueueにしてからstart()する', function() {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
@@ -135,7 +135,7 @@ describe('Task.Syncは', function() {
     it('stop()はキューを削除し、処理を停止する', function() {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
@@ -155,7 +155,7 @@ describe('Task.Syncは', function() {
     it('pause()は処理を一時停止し、resume()は処理を再開する', function() {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
@@ -188,7 +188,7 @@ describe('Task.Syncは', function() {
                 expect(queue).to.eql([]);
             };
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 task1,
                 task2
@@ -199,13 +199,13 @@ describe('Task.Syncは', function() {
 
         task.start();
 
-        task = new Task.Sync();
+        task = new Done.Sync();
         expect(task.getQueue()).to.eql([]);
     });
     it('resetQueue([queue])はインスタンス生成時、もしくは引数のqueueを初期状態としてqueueのリセットを行う', function() {
         var task1 = function() {};
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 task1
             ]
@@ -222,7 +222,7 @@ describe('Task.Syncは', function() {
     it('setQueue(queue)はqueueオプションの設定する', function() {
         var task1 = function(){};
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: []
         });
 
@@ -241,7 +241,7 @@ describe('Task.Syncは', function() {
             task2 = function() {},
             task3 = function() {};
 
-        task = new Task.Sync();
+        task = new Done.Sync();
 
         task.addTask(task1);
         task.addTask(task2);
@@ -260,7 +260,7 @@ describe('Task.Syncは', function() {
             task2 = function() {},
             task3 = function() {};
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 task1,
                 task2,
@@ -278,7 +278,7 @@ describe('Task.Syncは', function() {
     });
 
     it('start()実行時にstartイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('start', function() {
             done();
@@ -290,7 +290,7 @@ describe('Task.Syncは', function() {
     it('restart()実行時にresetイベント、startイベントが発火する', function(done) {
         var result = [];
 
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('reset', function() {
             result.push('reset');
@@ -308,7 +308,7 @@ describe('Task.Syncは', function() {
     });
 
     it('stop()実行時にstopイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('stop', function() {
             done();
@@ -318,7 +318,7 @@ describe('Task.Syncは', function() {
     });
 
     it('pause()実行時にpauseイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('pause', function() {
             done();
@@ -328,7 +328,7 @@ describe('Task.Syncは', function() {
     });
 
     it('resume()実行時にresumeイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('resume', function() {
             done();
@@ -339,7 +339,7 @@ describe('Task.Syncは', function() {
     });
 
     it('resetQueue()実行時にresetイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('reset', function() {
             done();
@@ -349,7 +349,7 @@ describe('Task.Syncは', function() {
     });
 
     it('setQueue()実行時にchangeイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('change', function() {
             done();
@@ -359,7 +359,7 @@ describe('Task.Syncは', function() {
     });
 
     it('addTask()実行時にchangeイベントが発火する', function(done) {
-        task = new Task.Sync({});
+        task = new Done.Sync({});
 
         task.on('change', function() {
             done();
@@ -373,7 +373,7 @@ describe('Task.Syncは', function() {
         var func1 = function() {
             };
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 func1
             ]
@@ -390,7 +390,7 @@ describe('Task.Syncは', function() {
         var result = [],
             count = 0;
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
@@ -416,7 +416,7 @@ describe('Task.Syncは', function() {
     it('キューの処理が全て完了した場合、completeイベントが発火する', function(done) {
         var result = [];
 
-        task = new Task.Sync({
+        task = new Done.Sync({
             queue: [
                 function() {
                     result.push(1);
