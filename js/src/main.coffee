@@ -1,3 +1,8 @@
+ns = do () ->
+    if typeof module == 'undefined'
+        return window
+    return module['exports']
+
 TRUE = true
 FALSE = false
 NULL = null
@@ -453,4 +458,4 @@ AbstractTask['Serial'] = AbstractTask['Sync'] = classExtend AbstractTask, {
         return
 }
 
-window['Done'] = AbstractTask
+ns['Done'] = AbstractTask
