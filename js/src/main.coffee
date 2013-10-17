@@ -57,23 +57,23 @@ bindOnProp = (that, config) ->
 hasDeclaredArgument = (func) ->
     return !!(isFunction(func) && func.length);
 
-fire_complete = (that) ->
-    that['fire'] 'complete'
+emit_complete = (that) ->
+    that['emit'] 'complete'
 
     return
 
-fire_nexttask = (that) ->
-    that['fire'] 'nexttask'
+emit_nexttask = (that) ->
+    that['emit'] 'nexttask'
 
     return
 
-fire_start = (that) ->
-    that['fire'] 'start'
+emit_start = (that) ->
+    that['emit'] 'start'
 
     return
 
-fire_progress = (that) ->
-    that['fire'] 'progress'
+emit_progress = (that) ->
+    that['emit'] 'progress'
 
     return
 
@@ -240,7 +240,7 @@ Observer = Class['extend']
 
         return delete observed[key]
 
-    'fire': Observer_bubble
+    'emit': Observer_bubble
     'bubble': Observer_bubble
     'capture': ->
         args = arguments
@@ -308,7 +308,7 @@ AbstractTask = classExtendObserver
         return
 
     'start': ->
-        fire_start @
+        emit_start @
         @['paused'] = FALSE
         @_exeQueue()
 
@@ -322,19 +322,19 @@ AbstractTask = classExtendObserver
 
     'stop': ->
         @_queue = NULL
-        @['fire'] 'stop'
+        @['emit'] 'stop'
 
         return
 
     'pause': ->
         @['paused'] = TRUE
-        @['fire'] 'pause'
+        @['emit'] 'pause'
 
         return
 
     'resume': ->
         if @['paused']
-            @['fire'] 'resume'
+            @['emit'] 'resume'
             @['paused'] = FALSE
             @_exeQueue()
 
@@ -349,12 +349,12 @@ AbstractTask = classExtendObserver
             if _queue[i]['resetQueue']
                 _queue[i]['resetQueue']();
 
-        @['fire'] 'reset';
+        @['emit'] 'reset';
 
         return
 
     _noticeChange: ->
-        @['fire'] 'change', @['getQueue']()
+        @['emit'] 'change', @['getQueue']()
 
         return
     'setQueue': (queue) ->
@@ -418,9 +418,9 @@ AbstractTask['Parallel'] = AbstractTask['Async'] = classExtend AbstractTask, {
     'exe': ->
         if @_queue
             if !@_queue.length
-                fire_complete @
+                emit_complete @
 
-                return fire_nexttask @
+                return emit_nexttask @
 
             @_processcount = @_queue.length
 
@@ -430,12 +430,12 @@ AbstractTask['Parallel'] = AbstractTask['Async'] = classExtend AbstractTask, {
         return
 
     'done': ->
-        fire_progress @
+        emit_progress @
         @_processcount--
 
         if !@_processcount
-            fire_complete @
-            fire_nexttask @
+            emit_complete @
+            emit_nexttask @
 
         return
 }
@@ -446,13 +446,13 @@ AbstractTask['Serial'] = AbstractTask['Sync'] = classExtend AbstractTask, {
             if @_queue[0]
                 return @['_super']()
 
-            fire_complete @
-            fire_nexttask @
+            emit_complete @
+            emit_nexttask @
 
         return
 
     'done': ->
-        fire_progress @
+        emit_progress @
         @['exe']()
 
         return

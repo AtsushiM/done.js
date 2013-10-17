@@ -56,7 +56,7 @@ async.off('event-name'); // 全てのイベントを解除する
 
 ### インスタンスに登録されたイベントを実行する
 ```javascript
-sync.fire('event-name', arg1, arg2, arg3);
+sync.emit('event-name', arg1, arg2, arg3);
 ```
 
 ### キューにタスクを追加する
@@ -135,14 +135,14 @@ var ExtendDone = Done.extend({
                     this._super();
                 }
                 else {
-                    this.fire('complete');
-                    this.fire('nexttask');
+                    this.emit('complete');
+                    this.emit('nexttask');
                 }
             }
         },
         done: function() {
             // write code.
-            this.fire('progress');
+            this.emit('progress');
             this.exe();
         }
     });

@@ -105,10 +105,10 @@ describe('Doneは', function() {
             count += 3;
         });
 
-        task.fire('test');
+        task.emit('test');
         expect(count).to.be(2);
 
-        task.fire('test1');
+        task.emit('test1');
         expect(count).to.be(5);
     });
 
@@ -121,14 +121,14 @@ describe('Doneは', function() {
             };
 
         task.one('one', args.one);
-        task.fire('one');
-        task.fire('one');
+        task.emit('one');
+        task.emit('one');
 
         expect(count).to.be(1);
 
         task.one('one', args.one);
         task.off('one', args.one);
-        task.fire('one');
+        task.emit('one');
 
         expect(count).to.be(1);
     });
@@ -142,12 +142,12 @@ describe('Doneは', function() {
         task.on('test', dammy1);
         task.off('test');
 
-        task.fire('test');
+        task.emit('test');
 
         expect(count).to.be(0);
     });
 
-    it('fire()でイベントを発火する', function() {
+    it('emit()でイベントを発火する', function() {
         var ret1 = 0,
             dammy1 = function() {
                 ret1++;
@@ -160,24 +160,24 @@ describe('Doneは', function() {
         task.on('test1', dammy1);
         task.on('test2', dammy2);
 
-        task.fire('test1');
+        task.emit('test1');
 
         expect(ret1).to.be(1);
         expect(ret2).to.be(0);
 
-        task.fire('test2');
+        task.emit('test2');
 
         expect(ret1).to.be(1);
         expect(ret2).to.be(1);
 
         task.on('test1', dammy2);
 
-        task.fire('test1');
+        task.emit('test1');
 
         expect(ret1).to.be(2);
         expect(ret2).to.be(2);
 
-        task.fire('test2');
+        task.emit('test2');
 
         expect(ret1).to.be(2);
         expect(ret2).to.be(3);
@@ -190,11 +190,11 @@ describe('Doneは', function() {
             expect(arg3).to.be(3);
         });
 
-        task.fire('test3', 1, 2, 3);
+        task.emit('test3', 1, 2, 3);
     });
 
-    it('bubble()はfireのエイリアスである', function() {
-        expect(task.fire).to.be(task.bubble);
+    it('bubble()はemitのエイリアスである', function() {
+        expect(task.emit).to.be(task.bubble);
     });
 
     it('addChild(instance)はDoneのインスタンスを子供として登録する。', function() {
@@ -218,7 +218,7 @@ describe('Doneは', function() {
             ret.push(2);
         });
 
-        child2.fire('test', 123);
+        child2.emit('test', 123);
 
         expect(ret).to.eql([2, 1, 0]);
     });
@@ -272,12 +272,12 @@ describe('Doneは', function() {
 
         task.removeChild(child1);
 
-        child2.fire('test', 123);
+        child2.emit('test', 123);
 
         expect(ret).to.eql([2, 1]);
 
         child1.removeChild();
-        child2.fire('test', 123);
+        child2.emit('test', 123);
 
         expect(ret).to.eql([2, 1, 2]);
     });
@@ -341,7 +341,7 @@ describe('Doneは', function() {
             ret.push(4);
         });
 
-        child2.fire('test', 123);
+        child2.emit('test', 123);
         expect(ret).to.eql([4, 3]);
 
         ret = [];
@@ -360,11 +360,11 @@ describe('Doneは', function() {
                         return this._super();
                     }
 
-                    this.fire('complete');
-                    this.fire('nexttask');
+                    this.emit('complete');
+                    this.emit('nexttask');
                 },
                 'done': function() {
-                    this.fire('progress');
+                    this.emit('progress');
                     this['exe']();
                 }
             }),
