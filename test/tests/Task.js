@@ -182,15 +182,12 @@ describe('Doneは', function() {
         expect(ret1).to.be(2);
         expect(ret2).to.be(3);
 
-        task.on('test3', function(arg1, arg2, arg3, ev) {
-            console.log(arguments);
+        task.on('test3', function(ev, arg1) {
             expect(ev).to.be.a('object');
             expect(arg1).to.be(1);
-            expect(arg2).to.be(2);
-            expect(arg3).to.be(3);
         });
 
-        task.emit('test3', 1, 2, 3);
+        task.emit('test3', 1);
     });
 
     it('bubble()はemitのエイリアスである', function() {
@@ -205,15 +202,15 @@ describe('Doneは', function() {
         task.addChild(child1);
         child1.addChild(child2);
 
-        task.on('test', function(num) {
+        task.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(0);
         });
-        child1.on('test', function(num) {
+        child1.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(1);
         });
-        child2.on('test', function(num) {
+        child2.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(2);
         });
@@ -231,15 +228,15 @@ describe('Doneは', function() {
         task.addChild(child1);
         child1.addChild(child2);
 
-        task.on('test', function(num) {
+        task.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(0);
         });
-        child1.on('test', function(num) {
+        child1.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(1);
         });
-        child2.on('test', function(num) {
+        child2.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(2);
         });
@@ -257,15 +254,15 @@ describe('Doneは', function() {
         task.addChild(child1);
         child1.addChild(child2);
 
-        task.on('test', function(num) {
+        task.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(0);
         });
-        child1.on('test', function(num) {
+        child1.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(1);
         });
-        child2.on('test', function(num) {
+        child2.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(2);
         });
@@ -290,15 +287,15 @@ describe('Doneは', function() {
         task.addChild(child1);
         child1.addChild(child2);
 
-        task.on('test', function(num) {
+        task.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(0);
         });
-        child1.on('test', function(num) {
+        child1.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(1);
         });
-        child2.on('test', function(num) {
+        child2.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(2);
         });
@@ -316,25 +313,25 @@ describe('Doneは', function() {
         task.addChild(child1);
         child1.addChild(child2);
 
-        task.on('test', function(num) {
+        task.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(0);
         });
-        task.on('test', function(num, ev) {
+        task.on('test', function(ev, num) {
             ev.preventDefault();
             ret.push(1);
         });
-        child1.on('test', function(num) {
+        child1.on('test', function(ev, num) {
             expect(num).to.be(123);
             ret.push(2);
         });
-        child2.on('test', function(num, ev) {
+        child2.on('test', function(ev, num) {
             ev.stopPropagation();
 
             expect(num).to.be(123);
             ret.push(3);
         });
-        child2.on('test', function(num, ev) {
+        child2.on('test', function(ev, num) {
             ev.stopPropagation();
 
             expect(num).to.be(123);

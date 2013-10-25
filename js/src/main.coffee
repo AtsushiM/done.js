@@ -145,6 +145,10 @@ Observer_removeChildExe = (childs, i) ->
 
 Observer_bubble = ->
     args = toArray arguments || []
+    callback = args[2]
+
+    args = args.slice(0, 2)
+
     temp = @['only'].apply @, args
 
     if FALSE != temp && !(temp || {})._flgStopPropagation
@@ -152,12 +156,23 @@ Observer_bubble = ->
 
         if temp then temp['bubble'].apply temp, args
 
+    Observer_exeCallback callback
+
+    return
+
+Observer_exeCallback = (callback) ->
+    if isFunction callback
+        callback.apply @
+    
     return
 
 Observer_preventDefault = ->
     @._flgPreventDefault = TRUE
+    return 
+
 Observer_stopPropagation = ->
     @._flgStopPropagation = TRUE
+    return
 
 Observer_event = (that, args) ->
     e = args[0]
@@ -243,12 +258,17 @@ Observer = Class['extend']
     'emit': Observer_bubble
     'bubble': Observer_bubble
     'capture': ->
-        args = arguments
+        args = toArray arguments
+        callback = args[2]
         childs = @_childs
+
+        args = args.slice 0, 2
 
         if FALSE !=  @['only'].apply @, args
             for val in childs by -1
                 val['capture'].apply val, args
+
+        Observer_exeCallback callback
 
         return
     'only': ->
@@ -256,8 +276,7 @@ Observer = Class['extend']
         e = Observer_event @, args
         target = @_observed[e['type']] || []
 
-        deleteArrayKey args, 0
-        args[args.length] = e
+        args[0] = e
 
         for val in target by -1
             if val
@@ -265,6 +284,8 @@ Observer = Class['extend']
 
                 if val == FALSE || e._flgPreventDefault
                     return val
+
+        Observer_exeCallback args[2]
 
         return e
 

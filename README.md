@@ -40,10 +40,10 @@ sync.start(); // 処理開始
 
 ### インスタンスにイベントを登録する
 ```javascript
-sync.on('event-name', function(arg1, arg2, arg3) {
+sync.on('event-name', function(arg) {
     // write code.
 });
-async.one('event-name', function(arg1, arg2, arg3) {
+async.one('event-name', function(arg) {
     // write code.
 }); // 1度だけ実行される
 ```
@@ -56,7 +56,9 @@ async.off('event-name'); // 全てのイベントを解除する
 
 ### インスタンスに登録されたイベントを実行する
 ```javascript
-sync.emit('event-name', arg1, arg2, arg3);
+sync.emit('event-name', arg, function(){
+    // callback.
+});
 ```
 
 ### キューにタスクを追加する
@@ -147,9 +149,3 @@ var ExtendDone = Done.extend({
         }
     });
 ```
-
-## More
-このライブラリはCIR.jsのC.Async, C.Syncを切り出したものです。
-
-http://atsushim.github.io/cir.js/#Async
-http://atsushim.github.io/cir.js/#Sync
